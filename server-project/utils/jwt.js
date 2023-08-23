@@ -1,0 +1,41 @@
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET_KEY } = require("../config");
+
+const createAccessToken = (user) => {
+  console.log(user);
+  const expToken = new Date();
+  expToken.setHours(expToken.getHours() + 3);
+  const payload = {
+    token_type: "access",
+    user_id: user._id,
+    iat: Date.now(),
+    exp: expToken.getTime(),
+  };
+
+  console.log("accessToken del jwt: ", payload.user_id);
+  return jwt.sign(payload, JWT_SECRET_KEY);
+};
+
+const createRefreshToken = (user) => {
+  const expToken = new Date();
+  expToken.setHours(expToken.getHours() + 3);
+  const payload = {
+    token_type: "refresh",
+    user_id: user._id,
+    iat: Date.now(),
+    exp: expToken.getTime(),
+  };
+};
+
+const verifyToken = (token) => {
+  return jwt.verify(token, JWT_SECRET_KEY);
+};
+module.exports = {
+  createAccessToken,
+  createRefreshToken,
+  verifyToken,
+};
+
+module.exports = {
+    createAccessToken
+};

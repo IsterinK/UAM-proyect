@@ -1,0 +1,61 @@
+###
+POST http://localhost:3000/v1/addresses/new-address HTTP/1.1
+Content-Type: application/json
+
+{
+
+    "country": "Pais 3",
+    "department": "Departamento 3",
+    "state": "Ciudad 3",
+    "nomclature": "Carrera 20 # 30 - 22"
+
+}
+
+###
+GET http://localhost:3000/v1/addresses HTTP/1.1
+
+###
+GET http://localhost:3000/v1/addresses/64dbeb990cfc9fc969695164 HTTP/1.1
+
+###
+DELETE http://localhost:3000/v1/addresses/64dbeb990cfc9fc969695164 HTTP/1.1
+
+###
+PATCH  http://localhost:3000/v1/addresses/64dbf39445305588900baa97 HTTP/1.1
+Content-Type: application/json
+
+{
+    "country": "Colombia",
+    "department": "Caldas",
+    "state": "Caldas",
+    "nomenclature": "Carrera 12 # 90 - 58"
+}
+
+###
+DELETE http://localhost:3000/v1/addresses/delete-many HTTP/1.1
+
+###
+POST http://localhost:3000/v1/users/signup HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Usuario 3",
+    "lastname": "Apellido 3",
+    "email": "user3@gmail.com",
+    "password": "123456",
+    "address": "64dbff3f446b1e8143d4c05c"
+}
+
+###
+GET http://localhost:3000/v1/users/ HTTP/1.1
+
+###
+POST http://localhost:3000/v1/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+    
+    "email": "user3@gmail.com",
+    "password": "123456"
+
+}
