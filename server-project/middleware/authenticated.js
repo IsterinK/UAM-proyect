@@ -1,5 +1,5 @@
 const jwt = require("../utils/jwt");
-//const User = require("../models/user");
+const User = require("../models/user");
 const { JWT_SECRET_KEY } = require("../config");
 
 const ensureAuth = async (req, res, next) => {

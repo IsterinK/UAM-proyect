@@ -1,4 +1,4 @@
-const User = require("../models/User");
+const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("../utils/jwt");
 
@@ -45,6 +45,7 @@ const login = async (req, res) => {
     }
     res.status(200).send({
       access: jwt.createAccessToken(userStore),
+      refresh: jwt.createRefreshToken(userStore)
     });
   } catch (error) {
     res.status(400).send({ msg: error.message });
@@ -56,7 +57,7 @@ const login = async (req, res) => {
 const getAllUsers = async (req, res) => {
   try {
     const response = await User.find()
-    res.status(200).json({ message: "Lista de usuarios:" }, response)
+    res.status(200).json(response)
   } catch (error) {
     res.status(500).json(error)
   }
@@ -64,14 +65,13 @@ const getAllUsers = async (req, res) => {
 
 //Consultar por id
 const getById = async (req, res) =>{
-  const userId = req.params;
-  console.log(userId);
+  const {userId} = req.params;
   try {
     const response = await User.findById(userId)  
     if(!response){
       throw new Error("El usuario no existe")
     }else{
-      res.status(200).json(user);
+      res.status(200).json(response);
     }
   } catch (error) {
     res.status(400).json(error)
@@ -97,8 +97,8 @@ const updateUser = async (req, res) => {
 
 //Eliminar usuario
 const deleteUser = async (req, res) => {
+  const { userId } = req.params
   try {
-    const { userId } = req.params
     await User.findByIdAndDelete(userId)
     res.status(200).json({ message: "Usuario eliminado" })
   } catch (error) {
