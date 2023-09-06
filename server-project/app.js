@@ -1,6 +1,7 @@
 //Importacion de librerias
 const bodyParser = require("body-parser")
 const express = require("express")
+const dotenv = require('dotenv').config();
 const addressRoutes = require("./controllers/address")
 const userRoutes = require("./routes/user")
 const categoryRoutes = require("./routes/category")
