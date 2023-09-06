@@ -8,7 +8,6 @@ const serviceRoutes = require("./routes/service")
 const clientRoutes = require("./routes/client")
 
 //Importacion de archivos
-const { API_VERSION } = require('./config')
 PORT = 3000
 
 const app = express()
@@ -21,11 +20,11 @@ app.use(express.static("uploads"));
 app.use('/uploads', express.static('uploads'));
 
 //Configuracion cabeceras HTTP
-app.use(`/${API_VERSION}/addresses`, addressRoutes)
-app.use(`/${API_VERSION}/users`, userRoutes)
-app.use(`/${API_VERSION}/categories`, categoryRoutes)
-app.use(`/${API_VERSION}/services`, serviceRoutes)
-app.use(`/${API_VERSION}/clients`, clientRoutes)
+app.use(`/${process.env.API_VERSION}/addresses`, addressRoutes)
+app.use(`/${process.env.API_VERSION}/users`, userRoutes)
+app.use(`/${process.env.API_VERSION}/categories`, categoryRoutes)
+app.use(`/${process.env.API_VERSION}/services`, serviceRoutes)
+app.use(`/${process.env.API_VERSION}/clients`, clientRoutes)
 
 /* 
     get = v1/addresses
