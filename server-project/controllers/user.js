@@ -10,17 +10,14 @@ const register = async (req, res) => {
     console.log("Contraseña", password)
     const enscriptar_contraseña = await bcrypt.genSalt(10)
     const contraseña = await bcrypt.hash(password, enscriptar_contraseña)
-    console.log("Contraseña encriptada", contraseña)
     const new_user = await User({
         name, lastmane, email: email.toLowerCase(), password: contraseña, address, active: true, rol:"user"
     })
-    console.log("Usuario creado ", new_user)
     const userDB = await new_user.save()
     res.status(201).json(userDB)
   } else {
     console.log("Faltan campos requeridos")
   }
-  
 };
 
 //Login
