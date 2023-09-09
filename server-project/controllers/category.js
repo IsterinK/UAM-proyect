@@ -48,7 +48,6 @@ const editCategory = async (req, res) => {
     try {
         const { categoryId } = req.params;
         const categoryData= req.body
-        console.log(categoryData)
         await Category.findByIdAndUpdate(categoryId, categoryData);
         res.status(200).json({ message: "Categoria Actualizada"})
     } catch (error) {

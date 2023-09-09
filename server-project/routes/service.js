@@ -5,7 +5,7 @@ const serviceController = require("../controllers/service")
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, './uploads/service') // Directorio donde se guardarán los archivos
+      cb(null, './uploads/servicios') // Directorio donde se guardarán los archivos
     },
     filename: function (req, file, cb) {
       cb(null, Date.now() + '-' + file.originalname);

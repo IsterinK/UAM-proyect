@@ -1,4 +1,4 @@
-const BASE_URL = "https://uam-proyect-production.up.railway.app"
+const BASE_URL = "http://localhost:3000"
 
 function getFilePath(file){
     const filePath = file.path;

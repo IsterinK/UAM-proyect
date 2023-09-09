@@ -10,7 +10,7 @@ const createService = async (req, res) => {
     
     if(name !== null && description !== null && category !== null && files !== null ){
         const new_service = await Service({
-            name, description, category, active: true, photos: files.map(file=>images.getImageUrl(file.path.replaceAll('\\', '/' )))
+            name, description, category, active: true, photos: files.map(file=>img.getImageUrl(file.path.replaceAll('\\', '/' )))
         })
         const serviceDB = await new_service.save()
         res.status(201).json(serviceDB)
