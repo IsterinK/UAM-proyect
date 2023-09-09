@@ -5,7 +5,7 @@ const clientController = require('../controllers/client')
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'https://uam-proyect-production.up.railway.app/v1/uploads/avatar') // Directorio donde se guardarán los archivos
+      cb(null, '/uploads/avatar') // Directorio donde se guardarán los archivos
     },
     filename: function (req, file, cb) {
       cb(null, Date.now() + '-' + file.originalname);
@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
   }); 
 const upload = multer({ storage: storage });
 
-router.post("/new-client", upload.any(), clientController.createClient)
+router.post("/new-client", upload.single(), clientController.createClient)
 router.get("/", clientController.getAllClients)
 router.get("/:clientId", clientController.getClientById)
 router.patch("/edit/:clientId", clientController.editClient)
