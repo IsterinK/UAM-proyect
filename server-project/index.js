@@ -14,8 +14,7 @@ mongoose
     .connect(connection_string)
     .then(()=>
         {
-            console.log('Conexion exitosa')
-            app.listen(process.env.PORT/* , ()=>console.log(`IP SERVER:\nhttp://${process.env.IP_SERVER}:${process.env.PORT}/${process.env.API_VERSION}`) */)
+            app.listen(process.env.PORT)
         })
     .catch((err)=>console.error(err))
 
