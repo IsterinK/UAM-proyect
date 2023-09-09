@@ -5,7 +5,7 @@ const clientController = require('../controllers/client')
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, './uploads/avatar') // Directorio donde se guardarán los archivos
+      cb(null, '../uploads/avatar') // Directorio donde se guardarán los archivos
     },
     filename: function (req, file, cb) {
       cb(null, Date.now() + '-' + file.originalname);
