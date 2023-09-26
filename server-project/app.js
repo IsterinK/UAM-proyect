@@ -20,6 +20,12 @@ app.use(bodyParser.json())
 app.use(express.static("uploads"));
 app.use('/uploads', express.static('uploads'));
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 //Configuracion cabeceras HTTP
 app.use(`/${process.env.API_VERSION}/addresses`, addressRoutes)
 app.use(`/${process.env.API_VERSION}/users`, userRoutes)
