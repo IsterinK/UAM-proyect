@@ -1,21 +1,34 @@
-import React, { useEffect, useState } from 'react'
-import {Auth} from "../../../api/auth"
-import { Autocomplete, IconButton, InputAdornment, OutlinedInput, TextField } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Auth } from "../../../api/auth";
+import { Autocomplete, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import "./SignUp.scss"
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import "./SignUp.scss";
 
 const SignUp = () => {
     const auth = new Auth();
+    // User
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
     const [currentPassword, setCurrentpassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState("");
+    // Errors
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
 
-    //Se ejecuta una vez cuando se carga el componente
+    // Se ejecuta una vez cuando se carga el componente
     useEffect(() => {
-        console.log("signup");
-    }, []);
+        if (currentPassword !== confirmPassword) {
+            setOpenSnackbar(true);
+            setSnackbarMessage("Las contraseñas no coinciden")
+        } else {
+            setOpenSnackbar(false);
+            setSnackbarMessage("");
+        }
+    }, [currentPassword, confirmPassword]);
 
     const handleSetFirstname = (event) => {
         setFirstname(event.target.value);
@@ -23,6 +36,15 @@ const SignUp = () => {
 
     const handleSetLastname = (event) => {
         setLastname(event.target.value);
+    }
+
+    const handleSetEmail = (event) => {
+        setEmail(event.target.value);
+    }
+
+    const handleSetPassword = (event) => {
+        const newPassword = event.target.value;
+        setCurrentpassword(newPassword);
     }
 
     const handleSave = async () => {
@@ -33,13 +55,13 @@ const SignUp = () => {
             currentPassword: currentPassword
         }
 
-        console.log(data)
-        try {
+        console.log(data);
+        /* try {
             const response = await auth.signup();
             console.log(response)
         } catch (error) {
             console.error(error)
-        }
+        } */
     }
 
     const handleClickShowPassword = () => {
@@ -57,67 +79,121 @@ const SignUp = () => {
         { label: 'Pasaporte', value: "PP" },
     ]
 
-  return (
-    <>
-        <div>
+    // Componente personalizado para el Snackbar
+    function Alert(props) {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
+
+    return (
+        <>
             <h2>SignUp</h2>
             <div className='auth-container'>
-                <form>
+                <form className='form'>
                     <div className='auth-form'>
                         <div className='auth-form_row'>
-                            <TextField 
-                                id="firstname" 
-                                label="Ingresa un valor" 
+                            <Autocomplete
+                                disablePortal
+                                id="combo-box-demo"
+                                options={documentTypeOptions}
+                                sx={{ width: 300 }}
+                                renderInput={(params) => <TextField {...params} label="Tipo de documento" />}
+                            />
+                        </div>
+
+                        <div className='auth-form_row'>
+                            <TextField
+                                id="firstname"
+                                label="Nombre"
                                 variant="standard"
-                                value={firstname} 
-                                className="input-auth-form" 
+                                value={firstname}
+                                className="input-auth-form"
                                 onChange={handleSetFirstname}
                             />
+                        </div>
 
-                            <TextField 
-                                id="lastname" 
-                                label="Ingresa un valor" 
-                                variant="standard" 
+                        <div className='auth-form_row'>
+                            <TextField
+                                id="lastname"
+                                label="Apellido"
+                                variant="standard"
                                 value={lastname}
-                                className="input-auth-form" 
+                                className="input-auth-form"
                                 onChange={handleSetLastname}
                             />
                         </div>
+
                         <div className='auth-form_row'>
-                        <OutlinedInput
-                            id="outlined-adornment-password"
-                            type={showPassword ? 'text' : 'password'}
-                            endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
-                                onMouseDown={handleMouseDownPassword}
-                                edge="end"
-                                >
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
-                            }
-                            label="Password"
-                        />
+                            <TextField
+                                id="email"
+                                label="Email"
+                                variant="standard"
+                                value={email}
+                                className="input-auth-form"
+                                onChange={handleSetEmail}
+                            />
                         </div>
+
                         <div className='auth-form_row'>
-                        <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={documentTypeOptions}
-                            sx={{ width: 300 }}
-                            renderInput={(params) => <TextField {...params} label="Selecciona una opción" />}
-                        />
+                            <FormControl>
+                                <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
+                                <OutlinedInput
+                                    label="Contraseña"
+                                    id="outlined-adornment-password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    onChange={handleSetPassword}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                />
+                            </FormControl>
+                        </div>
+
+                        <div className='auth-form_row'>
+                            <FormControl>
+                                <InputLabel htmlFor="outlined-adornment-confirm-password">Confirmar contraseña</InputLabel>
+                                <OutlinedInput
+                                    label="Confirmar contraseña"
+                                    id="outlined-adornment-confirm-password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    value={confirmPassword}
+                                    onChange={(event) => setConfirmPassword(event.target.value)}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                />
+                            </FormControl>
                         </div>
                     </div>
-                    <button onClick={handleSave}>ENVIAR</button>
                 </form>
-            </div> 
-        </div>
-    </>
-  )
+                <button onClick={handleSave}>ENVIAR</button>
+            </div>
+            <Snackbar
+                open={openSnackbar}
+            >
+                <MuiAlert onClose={() => setOpenSnackbar(false)} severity="error">
+                    {snackbarMessage}
+                </MuiAlert>
+            </Snackbar>
+        </>
+    );
 }
 
-export default SignUp
+export default SignUp;
