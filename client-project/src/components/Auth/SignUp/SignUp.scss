@@ -1,0 +1,23 @@
+.auth-container{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    background: #000000a8;
+    opacity: 0.8;
+    width: 70%;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+
+    .auth-form {
+        padding: 10px;
+        margin: 5px;
+        .auth-form_row {
+            background-color: white;
+            width: 100%;
+        }
+    }
+}
