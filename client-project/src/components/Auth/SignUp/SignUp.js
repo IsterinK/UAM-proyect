@@ -1,8 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import {Auth} from "../../../api/auth"
-import { Autocomplete, IconButton, InputAdornment, OutlinedInput, TextField } from '@mui/material';
+import { Autocomplete, Box, Button, Checkbox, FormControlLabel, IconButton, InputAdornment, Modal, OutlinedInput, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import "./SignUp.scss"
+
+const style = {
+    position: 'absolute',
+    maxHeight: '80vh',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 600,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    overflowY: 'auto',
+    pt: 2,
+    px: 4,
+    pb: 3,
+  };
+
 
 const SignUp = () => {
     const auth = new Auth();
@@ -11,6 +28,9 @@ const SignUp = () => {
     const [email, setEmail] = useState("");
     const [currentPassword, setCurrentpassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [terms, setTerms] = useState(false);
+    const [checkBox, setCheckBox] = useState(false);
+
 
     //Se ejecuta una vez cuando se carga el componente
     useEffect(() => {
@@ -23,6 +43,18 @@ const SignUp = () => {
 
     const handleSetLastname = (event) => {
         setLastname(event.target.value);
+    }
+
+    const handleSetOpenTerms = () => {
+        setTerms(true)
+    }
+    const handleSetCloseTerms = () => {
+        setTerms(false)
+    }
+
+    const handleSetCheckBox = () => {
+        setCheckBox(!checkBox);
+        console.log(checkBox);
     }
 
     const handleSave = async () => {
@@ -110,6 +142,72 @@ const SignUp = () => {
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label="Selecciona una opción" />}
                         />
+                        <Button onClick={handleSetOpenTerms}>Acepto Terminos y condiciones</Button>
+                        <div className='auth-form_row'>
+                            <div className='auth-form-modal'>
+                                <Modal
+                                
+                                open={terms}
+                                onClose={handleSetCloseTerms}
+                                aria-labelledby="parent-modal-title"
+                                aria-describedby="parent-modal-description"
+                                >
+                                <Box sx={{ ... style, width: 900 }}>
+                                    <h2 id="parent-modal-title">Terminos y Condiciones</h2>
+                                    <p id="parent-modal-description">
+                                    Por favor, lee detenidamente los siguientes términos y condiciones antes de utilizar nuestro sitio web. Al acceder y utilizar este sitio web, aceptas cumplir con estos términos y condiciones. Si no estás de acuerdo con alguno de los siguientes puntos, te recomendamos que no utilices nuestro sitio web. <br/>
+
+                                    1. Uso del Sitio Web <br/>
+
+                                    1.1. <br/>
+
+                                    El contenido de este sitio web es únicamente para información general y puede estar sujeto a cambios sin previo aviso. No garantizamos la exactitud, integridad o actualidad de la información proporcionada en este sitio web. <br/>
+
+                                    1.2. <br/>
+
+                                    El uso de cualquier información o material en este sitio web es bajo tu propio riesgo. Es tu responsabilidad asegurarte de que cualquier producto, servicio o información disponible a través de este sitio web cumpla con tus requisitos específicos. <br/>
+
+                                    1.3. <br/>
+
+                                    Este sitio web puede contener enlaces a otros sitios web que no están bajo nuestro control. No tenemos control sobre la naturaleza, el contenido y la disponibilidad de esos sitios. La inclusión de cualquier enlace no implica necesariamente una recomendación o respaldo de los puntos de vista expresados en ellos. <br/>
+
+                                    2. Propiedad Intelectual <br/>
+
+                                    2.1. <br/>
+
+                                    Todos los derechos de propiedad intelectual en relación con este sitio web y su contenido (incluyendo, pero no limitado a, texto, gráficos, logotipos, imágenes y software) son propiedad de SENNOVALAB o de nuestros licenciantes. Estos están protegidos por las leyes de propiedad intelectual aplicables. <br/>
+
+                                    2.2. <br/>
+
+                                    Está prohibida cualquier reproducción, distribución, modificación o uso no autorizado del contenido de este sitio web sin nuestro consentimiento previo por escrito. <br/>
+
+                                    3. Privacidad y Protección de Datos <br/>
+
+                                    3.1. <br/>
+
+                                    La recopilación y el uso de tus datos personales en relación con este sitio web están sujetos a nuestra Política de Privacidad. Al utilizar nuestro sitio web, aceptas el procesamiento de tus datos personales de acuerdo con nuestra Política de Privacidad. <br/>
+
+                                    4. Limitación de Responsabilidad <br/>
+
+                                    4.1. <br/>
+
+                                    En la medida permitida por la ley aplicable, excluimos todas las garantías y condiciones relacionadas con nuestro sitio web y su contenido. No seremos responsables de ningún daño directo, indirecto, incidental, especial o consecuente que surja del uso de este sitio web. <br/>
+
+                                    5. Modificaciones de los Términos y Condiciones <br/>
+
+                                    5.1. <br/>
+
+                                    Nos reservamos el derecho de modificar estos términos y condiciones en cualquier momento. Los cambios serán efectivos tan pronto como se publiquen en este sitio web. Te recomendamos que revises regularmente estos términos y condiciones para estar al tanto de cualquier cambio.
+                                    </p>
+                                    {/* <ChildModal /> */}
+                                    <FormControlLabel onChange={handleSetCheckBox} required control={<Checkbox />} label="Aceptar" />
+                                    <Button onClick={handleSetCloseTerms}>Salir</Button>
+                                </Box>
+                                
+                                </Modal>
+                            </div>
+                        </div>
+                        
                         </div>
                     </div>
                     <button onClick={handleSave}>ENVIAR</button>
