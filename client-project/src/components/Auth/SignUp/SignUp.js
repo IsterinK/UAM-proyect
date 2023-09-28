@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Auth } from "../../../api/auth";
+import { Auth } from "../../../api/index";
 import { InputLabel, FormControl, Autocomplete, Box, Button, Checkbox, FormControlLabel, IconButton, InputAdornment, Modal, OutlinedInput, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Snackbar from '@mui/material/Snackbar';
@@ -79,7 +79,6 @@ const SignUp = () => {
 
     const handleSetCheckBox = () => {
         setCheckBox(!checkBox);
-        console.log(checkBox);
     }
 
     const handleSave = async () => {
@@ -91,17 +90,17 @@ const SignUp = () => {
                 email: email,
                 currentPassword: currentPassword
             }
-            console.log(data);
+            console.log(data)
+            try {
+                const response = await auth.register(data);
+                console.log(response)
+            } catch (error) {
+                console.error(error)
+            }
         }else{
             setOpenSnackbarTerms(true)
             setSnackbarMessageTerms("Debes aceptar terminos y condiciones")
         } 
-        /* try {
-            const response = await auth.signup();
-            console.log(response)
-        } catch (error) {
-            console.error(error)
-        } */
     }
 
     const handleClickShowPassword = () => {
@@ -302,7 +301,7 @@ const SignUp = () => {
                     color="success"
                     onClick={handleSave}
                     sx={{
-                        
+
                     }}
                 >
                     Registrarse
