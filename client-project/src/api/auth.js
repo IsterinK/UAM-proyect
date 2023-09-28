@@ -3,7 +3,7 @@ const { SERVER_IP, API_ROUTES } = ENV;
 
 export class Auth{
     //Register
-    signup = async (data) => {
+    register = async (data) => {
         const response = await fetch(`${SERVER_IP}${API_ROUTES.AUTH}`, {
           method: "POST",
           headers: {

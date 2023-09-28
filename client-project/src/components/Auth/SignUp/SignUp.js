@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Auth } from "../../../api/auth";
+import { Auth } from "../../../api";
 import { InputLabel, FormControl, Autocomplete, Box, Button, Checkbox, FormControlLabel, IconButton, InputAdornment, Modal, OutlinedInput, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Snackbar from '@mui/material/Snackbar';
@@ -24,6 +24,9 @@ const style = {
 
 
 const SignUp = () => {
+    /* Regex for e-mail */
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|yahoo\.com|hotmail\.com|outlook.com|icloud.com|aol.com|protonmail.com|zoho.com)$/;
+    /* new Instance of Auth */
     const auth = new Auth();
     // User
     const [firstname, setFirstname] = useState("");
@@ -37,6 +40,8 @@ const SignUp = () => {
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [openSnackbarTerms, setOpenSnackbarTerms] = useState(false);
     const [snackbarMessageTerms, setSnackbarMessageTerms] = useState("");
+    const [openSnackbarEmail, setOpenSnackbarEmail] = useState(false);
+    const [snackbarMessageEmail, setSnackbarMessageEmail] = useState("");
     const [terms, setTerms] = useState(false);
     const [checkBox, setCheckBox] = useState(false);
 
@@ -62,6 +67,7 @@ const SignUp = () => {
 
     const handleSetEmail = (event) => {
         setEmail(event.target.value);
+        setOpenSnackbarEmail(false)
     }
 
     const handleSetPassword = (event) => {
@@ -85,23 +91,29 @@ const SignUp = () => {
     const handleSave = async () => {
         if(checkBox){
             setOpenSnackbarTerms(false)
-            const data = {
-                firstname: firstname,
-                lastname: lastname,
-                email: email,
-                currentPassword: currentPassword
+            if(emailRegex.test(email)){
+                const data = {
+                    firstname: firstname,
+                    lastname: lastname,
+                    email: email,
+                    currentPassword: currentPassword
+                }
+    
+                console.log(data);
+                try {
+                    const response = await auth.register();
+                    console.log(response)
+                } catch (error) {
+                    console.error(error)
+                }
+            } else {
+                setOpenSnackbarEmail(true)
+                setSnackbarMessageEmail('Direccion de correo Invalida')
             }
-            console.log(data);
         }else{
             setOpenSnackbarTerms(true)
             setSnackbarMessageTerms("Debes aceptar terminos y condiciones")
         } 
-        /* try {
-            const response = await auth.signup();
-            console.log(response)
-        } catch (error) {
-            console.error(error)
-        } */
     }
 
     const handleClickShowPassword = () => {
@@ -311,6 +323,14 @@ const SignUp = () => {
             >
                 <MuiAlert onClose={() => setOpenSnackbar(false)} severity="error">
                     {snackbarMessage}
+                </MuiAlert>
+            </Snackbar>
+
+            <Snackbar
+                open={openSnackbarEmail}
+            >
+                <MuiAlert onClose={() => setOpenSnackbarEmail(false)} severity="error">
+                    {snackbarMessageEmail}
                 </MuiAlert>
             </Snackbar>
         </>
