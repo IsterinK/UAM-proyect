@@ -1,12 +1,12 @@
-const SERVER_IP = 'http://localhost:3001/'
-const API = 'api/'
+const SERVER_IP = 'https://uam-proyect-production.up.railway.app/'
+/* const API = 'api/' */
 const API_VERSION = 'v1/'
 
 export const ENV = {
-  BASE_API_URL: SERVER_IP + API + API_VERSION,
+  BASE_API_URL: SERVER_IP /* + API */ + API_VERSION,
   BASE_URL: SERVER_IP,
   API_ROUTER: {
-    AUTH: "signup",
+    REGISTER: "users/signup",
     LOGIN: "login",
     USERS: "users/",
     CREATE_USER: "users/new-user"

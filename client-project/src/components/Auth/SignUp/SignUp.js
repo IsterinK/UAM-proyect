@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Auth } from "../../../api";
+import { Auth } from "../../../api/index";
 import { InputLabel, FormControl, Autocomplete, Box, Button, Checkbox, FormControlLabel, IconButton, InputAdornment, Modal, OutlinedInput, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Snackbar from '@mui/material/Snackbar';
@@ -85,7 +85,6 @@ const SignUp = () => {
 
     const handleSetCheckBox = () => {
         setCheckBox(!checkBox);
-        console.log(checkBox);
     }
 
     const handleSave = async () => {
@@ -137,8 +136,8 @@ const SignUp = () => {
     }
 
     return (
-        <>
-            <h2>SignUp</h2>
+        <div className='main-container'>
+            <h1>SignUp</h1>
             <div className='auth-container'>
                 <form className='form'>
                     <div className='auth-form'>
@@ -156,7 +155,7 @@ const SignUp = () => {
                             <TextField
                                 id="firstname"
                                 label="Nombre"
-                                variant="standard"
+                                variant="outlined"
                                 value={firstname}
                                 className="input-auth-form"
                                 onChange={handleSetFirstname}
@@ -167,7 +166,7 @@ const SignUp = () => {
                             <TextField
                                 id="lastname"
                                 label="Apellido"
-                                variant="standard"
+                                variant="outlined"
                                 value={lastname}
                                 className="input-auth-form"
                                 onChange={handleSetLastname}
@@ -178,7 +177,7 @@ const SignUp = () => {
                             <TextField
                                 id="email"
                                 label="Email"
-                                variant="standard"
+                                variant="outlined"
                                 value={email}
                                 className="input-auth-form"
                                 onChange={handleSetEmail}
@@ -232,14 +231,15 @@ const SignUp = () => {
                                     }
                                 />
                             </FormControl>
-                        <Autocomplete
-                            disablePortal
-                            id="combo-box-demo"
-                            options={documentTypeOptions}
-                            sx={{ width: 300 }}
-                            renderInput={(params) => <TextField {...params} label="Selecciona una opción" />}
-                        />
-                        <Button onClick={handleSetOpenTerms}>Acepto Terminos y condiciones</Button>
+                        
+                        <Button onClick={handleSetOpenTerms} 
+                            sx={{
+                                marginY:1
+                            }}
+                        >
+                            Acepto Terminos y condiciones
+                        </Button>
+
                         <div className='auth-form_row'>
                             <div className='auth-form-modal'>
                                 <Modal
@@ -308,7 +308,17 @@ const SignUp = () => {
                         </div>
                     </div>
                 </form>
-                <button onClick={handleSave}>ENVIAR</button>
+                <Button 
+                    variant="contained" 
+                    color="success"
+                    onClick={handleSave}
+                    sx={{
+
+                    }}
+                >
+                    Registrarse
+                </Button>
+                
             </div>
             <Snackbar
                 open={openSnackbarTerms}
@@ -333,7 +343,8 @@ const SignUp = () => {
                     {snackbarMessageEmail}
                 </MuiAlert>
             </Snackbar>
-        </>
+
+        </div>
     );
 }
 

@@ -1,14 +1,15 @@
 import {ENV} from "../utils/constants" 
-const { SERVER_IP, API_ROUTES } = ENV;
-
+const { BASE_API_URL, API_ROUTER } = ENV;
 export class Auth{
     //Register
     register = async (data) => {
-        const response = await fetch(`${SERVER_IP}${API_ROUTES.AUTH}`, {
+        const response = await fetch(`${BASE_API_URL}${API_ROUTER.REGISTER}`, {
+          mode: 'no-cors',
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
+          
           body: JSON.stringify(data),
         });
         try {
@@ -21,7 +22,8 @@ export class Auth{
     };
     //Login
     login = async (data) => {
-        const response = await fetch(`${SERVER_IP}${API_ROUTES.LOGIN}`, {
+        const response = await fetch(`${BASE_API_URL}${API_ROUTER.LOGIN}`, {
+          mode: 'no-cors',
           method: "POST",
           headers: {
             "Content-Type": "application/json",
