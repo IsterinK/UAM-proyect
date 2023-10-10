@@ -50,6 +50,22 @@ const login = async (req, res) => {
   }
 };
 
+const getMe = async (req, res) => {
+  try {
+    const { user_id } = req.user;
+    const response = await User.findById(user_id)
+
+    if (!response) {
+      return res.status(400).send({ message: "No se ha encontrado el ususario"})
+    }
+
+    res.status(200).send(response)
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Error del servidor"})
+  }
+}
+
 //Consultar usuario creado
 const getAllUsers = async (req, res) => {
   try {
@@ -109,5 +125,6 @@ module.exports = {
   getAllUsers,
   getById,
   updateUser, 
-  deleteUser
+  deleteUser,
+  getMe
 };

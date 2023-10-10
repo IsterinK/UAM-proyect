@@ -10,6 +10,7 @@ router.get("/", userController.getAllUsers);
 router.get("/:userId", userController.getById);
 router.patch("/edit/:userId", [ensuAuth.ensureAuth], userController.updateUser);
 router.delete("/delete/:userId", [ensuAuth.ensureAuth], userController.deleteUser);
+router.get("/get-me/:user_id", [ensuAuth.ensureAuth], userController.getMe);
 
 module.exports = router;
 

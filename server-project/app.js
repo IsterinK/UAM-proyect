@@ -27,11 +27,11 @@ app.use(function(req, res, next) {
 });
 
 //Configuracion cabeceras HTTP
-app.use(`/${process.env.API_VERSION}/addresses`, addressRoutes)
-app.use(`/${process.env.API_VERSION}/users`, userRoutes)
-app.use(`/${process.env.API_VERSION}/categories`, categoryRoutes)
-app.use(`/${process.env.API_VERSION}/services`, serviceRoutes)
-app.use(`/${process.env.API_VERSION}/clients`, clientRoutes)
+app.use(`/api/${process.env.API_VERSION}/addresses`, addressRoutes)
+app.use(`/api/${process.env.API_VERSION}/users`, userRoutes)
+app.use(`/api/${process.env.API_VERSION}/categories`, categoryRoutes)
+app.use(`/api/${process.env.API_VERSION}/services`, serviceRoutes)
+app.use(`/api/${process.env.API_VERSION}/clients`, clientRoutes)
 
 /* 
     get = v1/addresses
