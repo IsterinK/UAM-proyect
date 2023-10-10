@@ -9,7 +9,8 @@ export const ENV = {
     REGISTER: "users/signup",
     LOGIN: "login",
     USERS: "users/",
-    CREATE_USER: "users/new-user"
+    CREATE_USER: "users/new-user",
+    GETME: "users/get-me"
   },
   JWT: {
     ACCESS: "access",

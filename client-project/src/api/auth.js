@@ -43,5 +43,33 @@ export class Auth{
         }
       };
     //Get Log User
+    setAccessToken = (accessToken) => {
+      localStorage.setItem("access", accessToken);
+    };
+
+    getAccessToken = () => {
+      return localStorage.getItem("access");
+    };
+
+    async getMe() {
+      const accessToken = this.getAccessToken();
+      try {
+        const url = `${BASE_API_URL}${API_ROUTER.GETME}`
+        const params = {
+          method: "GET",
+          headers:{
+            Authorización: `Bearer ${accessToken}`
+          },
+        };
+        const response = await fetch(url, params)
+        const result = response.json()
+
+        if(response.status !== 200) throw result
+
+        return result
+      } catch (error) {
+        throw error
+      }
+    }
 
 }
