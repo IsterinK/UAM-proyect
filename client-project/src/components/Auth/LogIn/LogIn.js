@@ -25,7 +25,6 @@ const Login = () => {
     }
     try {
         const response = await auth.login(data);
-        console.log(response)
     } catch (error) {
         console.error(error)
     }
