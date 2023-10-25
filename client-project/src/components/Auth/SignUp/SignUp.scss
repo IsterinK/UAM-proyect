@@ -24,7 +24,8 @@
         gap: 10px;
 
         .auth-form_row {
-            display: grid;
+            display: flex;
+            flex-direction: row;
             background: white;
             width: 100%;
         }

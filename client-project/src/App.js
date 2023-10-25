@@ -1,6 +1,6 @@
 import WebHome  from './pages/guest/WebHome';
 import Login from './components/Auth/LogIn/LogIn';
-import Users from './pages/admin/users/Users'
+import Users from './pages/admin/users/Users';
 
 function App() {
   return (

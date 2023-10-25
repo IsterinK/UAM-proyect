@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Auth } from "../../../api/index";
-import { InputLabel, FormControl, Autocomplete, Box, Button, Checkbox, FormControlLabel, IconButton, InputAdornment, Modal, OutlinedInput, TextField } from '@mui/material';
+import { InputLabel, FormControl, Autocomplete, Box, Button, Checkbox, FormControlLabel, IconButton, InputAdornment, Modal, OutlinedInput, TextField, CardContent, Grid, Fab, Avatar } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -35,6 +35,7 @@ const SignUp = () => {
     const [currentPassword, setCurrentpassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [avatar, setAvatar] = useState(null)
     // Errors
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -61,6 +62,19 @@ const SignUp = () => {
         setFirstname(event.target.value);
     }
 
+    const handleUploadClick = (event) => {
+        console.log();
+        var file = event.target.files[0];
+        const reader = new FileReader();
+        var url = reader.readAsDataURL(file);
+    
+        reader.onloadend = function(e) {
+            setAvatar([reader.result])
+        }.bind(this);
+        console.log(url); // Would see a path?
+    
+        
+      };
     const handleSetLastname = (event) => {
         setLastname(event.target.value);
     }
@@ -137,10 +151,24 @@ const SignUp = () => {
 
     return (
         <div className='main-container'>
-            <h1>SignUp</h1>
+            <h1>Registrar</h1>
             <div className='auth-container'>
+
                 <form className='form'>
                     <div className='auth-form'>
+                        <Avatar>
+                        <Grid container justify="center" alignItems="center">
+                            <input
+                            accept="image/*"
+                            id="contained-button-file"
+                            multiple
+                            type="file"
+                            onChange={handleUploadClick}
+                            />
+                        
+                        </Grid>
+                        </Avatar>
+                    
                         <div className='auth-form_row'>
                             <Autocomplete
                                 disablePortal
@@ -160,9 +188,6 @@ const SignUp = () => {
                                 className="input-auth-form"
                                 onChange={handleSetFirstname}
                             />
-                        </div>
-
-                        <div className='auth-form_row'>
                             <TextField
                                 id="lastname"
                                 label="Apellido"
@@ -206,9 +231,6 @@ const SignUp = () => {
                                     }
                                 />
                             </FormControl>
-                        </div>
-
-                        <div className='auth-form_row'>
                             <FormControl>
                                 <InputLabel htmlFor="outlined-adornment-confirm-password">Confirmar contraseña</InputLabel>
                                 <OutlinedInput
@@ -231,15 +253,16 @@ const SignUp = () => {
                                     }
                                 />
                             </FormControl>
-                        
-                        <Button onClick={handleSetOpenTerms} 
-                            sx={{
-                                marginY:1
-                            }}
-                        >
-                            Acepto Terminos y condiciones
-                        </Button>
+                        </div>
 
+                            {/* <Button onClick={handleSetOpenTerms} 
+                                sx={{
+                                    marginY:1
+                                }}
+                            >
+                                Acepto Terminos y condiciones
+                            </Button> */}
+                            
                         <div className='auth-form_row'>
                             <div className='auth-form-modal'>
                                 <Modal
@@ -305,7 +328,7 @@ const SignUp = () => {
                             </div>
                         </div>
                         
-                        </div>
+                        
                     </div>
                 </form>
                 <Button 

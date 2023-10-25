@@ -43,6 +43,38 @@ export class Auth{
       }
     };
 
+    async createUser(data) {
+      const accessToken = this.getAccessToken();
+      try {
+        const formData = new FormData();
+        Object.keys(data).forEach((key) => {
+          formData.append(key, data[key]);
+        });
+  
+        if (data.fileAvatar) {
+          formData.append("avatar", data.fileAvatar);
+        }
+  
+        const url = `${BASE_API_URL}/${API_ROUTER.USERS}`;
+        const params = {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: formData,
+        };
+  
+        const response = await fetch(url, params);
+        const result = await response.json();
+  
+        if (response.status !== 201) throw result;
+  
+        return result;
+      } catch (error) {
+        throw error;
+      }
+    }
+
     //Get Log User
     setAccessToken = (accessToken) => {
       localStorage.setItem("access", accessToken);

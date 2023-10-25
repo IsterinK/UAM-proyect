@@ -1,13 +1,13 @@
 import { Tab, Button } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
-import "./Users.scss";
+/* import "./Users.scss"; */
 import { BasicModal } from "../../../components/Shared/BasicModal";
 import ListUsers from "../../../components/Admin/Users/UsersList/UsersList";
 /* import UserForm from "../../../components/Admin/Users/UserForm/UserForm";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllSedes } from "../../../actions/sedesActions"; */
 
-const Users = () => {
+export const Users = () => {
   const [showModal, setShowModal] = useState(false);
  
   const handleOpenModal = () => {
@@ -70,5 +70,3 @@ const Users = () => {
     </>
   );
 };
-
-export default Users;
