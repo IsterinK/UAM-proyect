@@ -71,6 +71,59 @@ export class Auth{
       } catch (error) {
         throw error
       }
+    };
+
+    async createUser(data) {
+      const accessToken = this.getAccessToken();
+      try {
+        const formData = new FormData();
+        Object.keys(data).forEach((key) => {
+          formData.append(key, data[key]);
+        });
+  
+        if (data.fileAvatar) {
+          formData.append("avatar", data.fileAvatar);
+        }
+  
+        const url = `${this.baseApi}/${ENV.API_ROUTES.USER}`;
+        const params = {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: formData,
+        };
+  
+        const response = await fetch(url, params);
+        const result = await response.json();
+  
+        if (response.status !== 201) throw result;
+  
+        return result;
+      } catch (error) {
+        throw error;
+      }
     }
+
+    getUsers = async () => {
+      const response = await fetch(`${BASE_API_URL}${API_ROUTER.USERS}`, {
+        /* mode: 'no-cors', */
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      try {
+        if (response.status !== 200) {
+          throw new Error("Error al obtener usuarios");
+        }else{
+          const result = await response.json()
+          return result
+        }
+      } catch (error) {
+        throw error;
+      }
+
+    };
 
 }
