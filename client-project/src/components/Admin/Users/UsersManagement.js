@@ -43,11 +43,11 @@ export default function ListUsers({ usersActive }) {
         ...user,
         active: user.active ? 'Activo' : 'Inactivo'
       }));
-  
+
       const filteredUsers = usersActive
         ? usersWithStatus.filter(user => user.active === 'Activo')
         : usersWithStatus.filter(user => user.active === 'Inactivo');
-      
+
       console.log("activos", usersWithStatus.filter(user => user.active === 'Activo'))
       console.log("inactivos", usersWithStatus.filter(user => user.active === 'Inactivo'))
       setRows(filteredUsers);

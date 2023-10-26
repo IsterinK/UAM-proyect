@@ -12,6 +12,7 @@ const clientRoutes = require("./routes/client")
 PORT = 3000
 
 const app = express()
+app.use(express.json());
 
 //Visualizacion del contenido del endpoint o envio del contenido
 app.use(bodyParser.urlencoded({ extended: false }))

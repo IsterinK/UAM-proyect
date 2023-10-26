@@ -1,74 +1,52 @@
 import { Tab, Button } from "semantic-ui-react";
 import React, { useEffect, useState } from "react";
 import "./Users.scss";
-import { BasicModal } from "../../../components/Shared/BasicModal";
-import ListUsers from "../../../components/Admin/Users/UsersList/UsersList";
-/* import UserForm from "../../../components/Admin/Users/UserForm/UserForm";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllSedes } from "../../../actions/sedesActions"; */
+import ListUsers from "../../../components/Admin/Users/UsersManagement";
+import {BasicModal} from "../../../components/Shared/BasicModal"
+import { Dialog } from "@mui/material";
 
 const Users = () => {
   const [showModal, setShowModal] = useState(false);
- 
+  const [listUsersKey, setListUsersKey] = useState(0); // Estado para la clave
+
   const handleOpenModal = () => {
     setShowModal(true);
-    /* setReload(false); */
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
+  const handleTabChange = () => {
+    // Cambia la clave para forzar la recarga de ListUsers
+    setListUsersKey(listUsersKey + 1);
+  };
+
   const panes = [
-    {
-      menuItem: "Activos",
-      render: () => (
-        <Tab.Pane attached={false}>
-          <ListUsers
-            usersActive={true}
-            /* sedes={sedes}
-            reload={reload}
-            onReload={onReload} */
-          />
-        </Tab.Pane>
-      ),
-    },
-    {
-      menuItem: "Inactivos",
-      render: () => (
-        <Tab.Pane attached={false}>
-          <ListUsers
-            usersActive={false}
-            /* sedes={sedes}
-            reload={reload}
-            onReload={onReload} */
-          />
-        </Tab.Pane>
-      ),
-    },
+    { menuItem: 'Activos', render: () => <Tab.Pane><ListUsers key={listUsersKey} usersActive={true} /></Tab.Pane> },
+    { menuItem: 'Inactivos', render: () => <Tab.Pane><ListUsers key={listUsersKey} usersActive={false} /></Tab.Pane> },
   ];
 
   return (
-    <>
+    <div className="main-cont">
       <h2>Usuarios</h2>
-      <div className="users-page">
+      <div className="users-page" style={{ gap: 10, marginBottom: 10 }}>
         <div className="title-section">
           <Button className="add-user-btn" color="primary" onClick={handleOpenModal}>
             Nuevo usuario
           </Button>
         </div>
-        <div className="list-users-table">
-          <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
+        <div className="list-users-table ui pointing menu">
+          <Tab panes={panes} onTabChange={handleTabChange} menu={{ pointing: true }}/>
         </div>
-        {showModal && (
-            <BasicModal handleCloseModal={handleCloseModal}></BasicModal>
-        )}
-        
       </div>
-        {/* <Dialog>
-        </Dialog> */}
-    </>
+      {showModal && (
+            <BasicModal handleCloseModal={handleCloseModal}></BasicModal>
+      )}
+      <Dialog></Dialog>
+    </div>
   );
 };
+
 
 export default Users;

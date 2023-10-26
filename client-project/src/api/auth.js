@@ -4,7 +4,6 @@ export class Auth{
     //Register
     register = async (data) => {
         const response = await fetch(`${BASE_API_URL}${API_ROUTER.REGISTER}`, {
-          mode: 'no-cors',
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -15,6 +14,8 @@ export class Auth{
         try {
           if (response.status !== 201) {
             throw new Error("Error al crear usuario");
+          }else{
+            return "Usuario creado con éxito"
           }
         } catch (error) {
           throw error;

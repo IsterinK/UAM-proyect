@@ -2,36 +2,22 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.auth-container{
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
-    background: transparent;
-    opacity: 0.8;
-    width: 70%;
-    padding: 5px;
-    margin: 5px;
-    border-radius: 5px;
 
-    & .form .auth-form {
+    & .auth-container{
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 10px;
-
-        .auth-form_row {
+        
+        & .auth-form{
             display: flex;
-            flex-direction: row;
-            background: white;
-            width: 100%;
-        }
+            flex-direction: column;
+            gap: 15px;
 
-        .auth-form-modal {
-            max-height: 80vh;
+            .autocomplete-container {
+                display: flex;
+                flex-direction: row;
+            }
         }
     }
 }

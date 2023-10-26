@@ -1,4 +1,4 @@
-import React from 'react'
+/* import React from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 
 const UsersList = () => {
@@ -52,3 +52,4 @@ const UsersList = () => {
 }
 
 export default UsersList
+ */

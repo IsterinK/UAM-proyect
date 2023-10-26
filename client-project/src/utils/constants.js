@@ -1,4 +1,5 @@
-const SERVER_IP = 'https://uam-proyect-production.up.railway.app/'
+/* const SERVER_IP = 'https://uam-proyect-production.up.railway.app/' */
+const SERVER_IP = 'http://localhost:3000/'
 /* const API = 'api/' */
 const API_VERSION = 'api/v1/'
 
@@ -11,6 +12,9 @@ export const ENV = {
     USERS: "users/",
     CREATE_USER: "users/new-user",
     GETME: "users/get-me",
+
+    // Address
+    CREATE_ADDRESS: "addresses/newaddress"
   },
   JWT: {
     ACCESS: "access",
