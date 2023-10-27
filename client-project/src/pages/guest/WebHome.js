@@ -1,14 +1,21 @@
 import React from 'react'
-import SignUp from '../../components/Auth/SignUp/SignUp'
+import "./WebHome.scss"
+import Navbar from '../../components/surfaces/NavBar';
 
 const WebHome = () => {
   return (
-    <>
-    <SignUp>
-      
-    </SignUp>
-    </>
-  )
+    <div className="App">
+      <header className="App-header">
+        <Navbar />
+      </header>
+      <main className="App-content">
+        <div>
+          <p className='content'>Mientras tanto</p>
+        </div>
+      </main>
+    </div>
+  );
 }
 
 export default WebHome
+

@@ -12,6 +12,7 @@ export const ENV = {
     USERS: "users/",
     CREATE_USER: "users/new-user",
     GETME: "users/get-me",
+    DELETE_USER: "users/delete/",
 
     // Address
     CREATE_ADDRESS: "addresses/newaddress"

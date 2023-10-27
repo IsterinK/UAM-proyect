@@ -7,11 +7,11 @@ const userRoutes = require("./routes/user")
 const categoryRoutes = require("./routes/category")
 const serviceRoutes = require("./routes/service")
 const clientRoutes = require("./routes/client")
-
+const cors = require('cors')
 //Importacion de archivos
 PORT = 3000
 
-const app = express()
+const app = express() 
 app.use(express.json());
 
 //Visualizacion del contenido del endpoint o envio del contenido
@@ -21,11 +21,7 @@ app.use(bodyParser.json())
 app.use(express.static("uploads"));
 app.use('/uploads', express.static('uploads'));
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+app.use(cors());  
 
 //Configuracion cabeceras HTTP
 app.use(`/api/${process.env.API_VERSION}/addresses`, addressRoutes)
