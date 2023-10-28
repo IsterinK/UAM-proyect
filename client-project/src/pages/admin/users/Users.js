@@ -6,6 +6,7 @@ import { BasicModal } from "../../../components/Shared/BasicModal";
 import { Button } from "@mui/material";
 import { Auth } from "../../../api/index";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../../../components/surfaces/NavBar";
 
 const Users = () => {
   const navigate = useNavigate();
@@ -48,6 +49,9 @@ const Users = () => {
 
   return (
     <div className="main-cont">
+      <div className="App-header">
+        <Navbar></Navbar>
+      </div>
       <p className="title">Usuarios</p>
       <Button className="add-user-btn" variant="contained" color="success" onClick={handleOpenModal}>
         Nuevo usuario

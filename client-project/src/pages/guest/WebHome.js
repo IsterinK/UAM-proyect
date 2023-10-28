@@ -12,6 +12,9 @@ const WebHome = () => {
         <div>
           <p className='content'>Mientras tanto</p>
         </div>
+        <div>
+          <img src="https://seeklogo.com/images/S/squirtle-logo-0E4AE193EE-seeklogo.com.png" alt="Eliminar" style={{ width: '30%' }} />
+        </div>
       </main>
     </div>
   );

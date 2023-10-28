@@ -11,7 +11,7 @@ const register = async (req, res) => {
     const enscriptar_contraseña = await bcrypt.genSalt(10)
     const contraseña = await bcrypt.hash(password, enscriptar_contraseña)
     const new_user = await User({
-        name, lastname, email: email.toLowerCase(), password: contraseña, address, active: true, rol:"user"
+        name, lastname, email: email.toLowerCase(), password: contraseña, address, active: false, rol:"user"
     }) 
     const userDB = await new_user.save()
     res.status(201).json(userDB)

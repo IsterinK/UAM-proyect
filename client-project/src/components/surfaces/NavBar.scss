@@ -1,10 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;700&display=swap");
 
 header {
-	width: 100%;
+	margin: 0;
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: flex-end;
 	height: 40px;
 	padding: 0 2rem;
 	background-color: var(--mainColor);

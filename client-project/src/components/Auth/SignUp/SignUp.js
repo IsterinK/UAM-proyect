@@ -186,11 +186,10 @@ const SignUp = () => {
 
     const handleMunChange = (event, value) => {
         if (value === null) {
-            // Handle the case when no municipality is selected
             setSelectedMun(null);
+            setMunicipalities([{ label: "Selecciona un municipio", value: null }]);
         } else {
-            // Handle the case when a municipality is selected
-            setSelectedMun(value);
+            setSelectedMun(value.value);
         }
     }
 
