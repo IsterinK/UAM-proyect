@@ -3,7 +3,16 @@
     height: 100vh;
     margin: 0;
     padding: 0;
-    background: linear-gradient(180deg, rgb(150, 145, 253), rgb(63, 61, 117),);
+    
+    background: url('https://static.vecteezy.com/system/resources/previews/001/814/749/original/dark-purple-gradient-polygon-wallpaper-vector.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+
+    & .nav-container{
+        width: 100%;
+        height: 15%;
+    }
 
 
     & .title{
@@ -12,16 +21,15 @@
         margin-left: 10%;
         color: white;
         font-weight: bold;
+        margin-top: 10px;
     }
 
     & .add-user-btn{
-        margin-top: 5px;
+        margin-top: 10px;
         margin-left: 10%;
     }
 
 }
-
-
 
 .users-page{
     width: 100%;
