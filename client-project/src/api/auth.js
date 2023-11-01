@@ -29,12 +29,12 @@ export class Auth{
       });
       try {
         if (response.status !== 200) {
-          const errorData = await response.json();
-          throw new Error(errorData.error);
+          const errorData = await response.json(); 
+          return errorData.msg
         }else{
           const { access } = await response.json();
           localStorage.setItem(ENV.JWT.ACCESS, access)
-          return true
+          return "true"
         }
       } catch (error) {
         throw error;
