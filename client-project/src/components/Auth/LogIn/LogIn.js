@@ -36,8 +36,17 @@ const Login = () => {
 
     try {
       const response = await auth.login(data);
-      if(response){
+      if(response === "true"){
         navigate("/admin/users");
+      }else if(response === "Contraseña incorrecta"){
+        setSnackbarMessage(response);
+        setSnackbarOpen(true);
+      }else if(response === "Usuario no autorizado o no activo"){
+        setSnackbarMessage(response);
+        setSnackbarOpen(true);
+      }else if(response === "El usuario no existe"){
+        setSnackbarMessage(response);
+        setSnackbarOpen(true);
       }
     } catch (error) {
       console.error(error);
