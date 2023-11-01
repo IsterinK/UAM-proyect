@@ -16,24 +16,18 @@ const SignUp = () => {
     const auth = new Auth();
     const dep = new Department();
 
-    const inputRef = useRef(null);
     const [selectedImage, setSelectedImage] = useState(null);
 
     const handleUploadClick = (event) => {
         var file = event.target.files[0];
-        const reader = new FileReader();
-        reader.onloadend = function(e) {
-            setSelectedImage(reader.result);
-        };
-        reader.readAsDataURL(file);
+        setSelectedImage(file)
     };
 
     // User
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
-    const [currentPassword, setCurrentpassword] = useState("");
-    const [avatar, setAvatar] = useState(null)
+    const [currentPassword, setCurrentpassword] = useState("")
 
     // Address
     const [selectedDepartment, setSelectedDepartment] = useState(null);
@@ -55,6 +49,7 @@ const SignUp = () => {
     //SnackBars
     const [openSnackbarName, setOpenSnackbarName] = useState(false);
     const [openSnackbarNomenclature, setOpenSnackbarNomenclature] = useState(false);
+    const [openSnackbarAvatar, setOpenSnackbarAvatar] = useState(false);
     const [openSnackbarLastname, setOpenSnackbarLastname] = useState(false);
     const [openSnackbarPassword, setOpenSnackbarPassword] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -143,6 +138,11 @@ const SignUp = () => {
                 setOpenSnackbarNomenclature(true); // Muestra un Snackbar si el campo de nomenclatura está vacío
                 return;
             }
+
+            if (selectedImage === null){
+                setOpenSnackbarAvatar(true);
+                return;
+            }
     
             if (emailRegex.test(email)) {
                 // Validación de contraseñas
@@ -155,18 +155,24 @@ const SignUp = () => {
     
                     try {
                         const addr = await handleSaveAddress();
-                        const data = {
-                            name: firstname,
-                            lastname: lastname,
-                            email: email,
-                            password: currentPassword,
-                            address: addr
+                        
+                        const formData = new FormData();
+                        formData.append("name", firstname);
+                        formData.append("lastname", lastname);
+                        formData.append("email", email);
+                        formData.append("password", currentPassword);
+                        formData.append("address", addr);
+                        formData.append("avatar", selectedImage);
+                        
+                        console.log("FormData:");
+                        for (const pair of formData.entries()) {
+                        console.log(pair[0] + ": " + pair[1]);
                         }
-    
+
                         try {
-                            const response = await auth.register(data);
-                            console.log(response)
-                            if(response === 'Usuario creado con éxito'){
+                            const response = await auth.register(formData);
+                            console.log(response);
+                            if (response === "Usuario creado con éxito") {
                                 navigate("/login");
                             }
                         } catch (error) {
@@ -281,7 +287,6 @@ const SignUp = () => {
                         type="file"
                         onChange={handleUploadClick}
                         style={{ display: 'none' }}
-                        ref={inputRef}
                     />
                     <div className="avatar-button-container">
                         <label htmlFor="contained-button-file">
@@ -296,7 +301,7 @@ const SignUp = () => {
                         {selectedImage && (
                             <Avatar
                                 alt="Imagen de perfil"
-                                src={selectedImage}
+                                src={URL.createObjectURL(selectedImage)}
                                 sx={{
                                     width: 60,
                                     height: 60,
@@ -561,6 +566,12 @@ const SignUp = () => {
             <Snackbar open={openSnackbarNomenclature} autoHideDuration={3000} onClose={() => setOpenSnackbarNomenclature(false)}>
                 <MuiAlert severity="error">
                     El campo de nomenclatura no puede estar vacío.
+                </MuiAlert>
+            </Snackbar>
+
+            <Snackbar open={openSnackbarAvatar} autoHideDuration={3000} onClose={() => setOpenSnackbarAvatar(false)}>
+                <MuiAlert severity="error">
+                    Debes seleccionar un avatar
                 </MuiAlert>
             </Snackbar>
 

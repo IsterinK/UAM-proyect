@@ -7,7 +7,8 @@ const userSchema = mongoose.Schema({
     password: { type: String },
     active: { type: Boolean },
     rol: { type: String },
-    address: { type: mongoose.Schema.Types.ObjectId, ref:"Address"}
+    address: { type: mongoose.Schema.Types.ObjectId, ref:"Address"},
+    avatar: {type: String, require:true},
 })
 
 module.exports = mongoose.model("User", userSchema);

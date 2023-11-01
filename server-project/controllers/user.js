@@ -5,18 +5,34 @@ const jwt = require("../utils/jwt");
 
 // Crear usuario
 const register = async (req, res) => {
-  const { name, lastname, email, password, address } = req.body;
-  console.log(req.body)
-  if(name !==null && lastname !== null && email !== null && password !== null && address !== null){
-    const enscriptar_contraseña = await bcrypt.genSalt(10)
-    const contraseña = await bcrypt.hash(password, enscriptar_contraseña)
-    const new_user = await User({
-        name, lastname, email: email.toLowerCase(), password: contraseña, address, active: false, rol:"user"
-    }) 
-    const userDB = await new_user.save()
-    res.status(201).json(userDB)
-  } else {
-    console.log("Faltan campos requeridos")
+  try {
+    const { name, lastname, email, password, address } = req.body;
+    const avatarPath = req.file.path; 
+
+    if (name && lastname && email && password && address) {
+      const encriptar_contrasena = await bcrypt.genSalt(10);
+      const contrasena = await bcrypt.hash(password, encriptar_contrasena);
+
+      const newUser = new User({
+        name,
+        lastname,
+        email: email.toLowerCase(),
+        password: contrasena,
+        address,
+        active: false,
+        rol: "user",
+        avatar: avatarPath, 
+      });
+
+      const userDB = await newUser.save();
+
+      res.status(201).json({ message: "Usuario registrado con éxito", user: userDB });
+    } else {
+      res.status(400).json({ message: "Faltan campos requeridos" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: error.message });
   }
 };
 
