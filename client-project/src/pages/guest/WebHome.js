@@ -4,18 +4,12 @@ import Navbar from '../../components/surfaces/NavBar';
 
 const WebHome = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Navbar />
-      </header>
-      <main className="App-content">
-        <div>
-          <p className='content'>Mientras tanto</p>
+    <div className='main'>
+      <div className='main-container'>
+        <div className='nav-container'>
+          <Navbar></Navbar>
         </div>
-        <div>
-          <img src="https://seeklogo.com/images/S/squirtle-logo-0E4AE193EE-seeklogo.com.png" alt="Eliminar" style={{ width: '30%' }} />
-        </div>
-      </main>
+      </div> 
     </div>
   );
 }

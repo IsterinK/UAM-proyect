@@ -5,9 +5,10 @@ import "./RegisterView.scss"
 const RegisterView = () => {
     return (
         <div className='view-container-reg '>
-          <div className='bg-reg'></div>
-          <div className='register-container'>
-            <SignUp />
+          <div className='bg-reg'>
+            <div className='register-container'>
+              <SignUp />
+            </div>
           </div>
         </div>
     );

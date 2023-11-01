@@ -1,14 +1,13 @@
-import { useRef, useState } from "react";
-import { FaBars, FaTimes } from "react-icons/fa";
+import React, { useState } from 'react'
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import "./NavBar.scss";
 import { Auth } from "../../api";
 import { Button } from "@mui/material";
+import "./NavBar.scss"
 
-function Navbar() {
+const NavBar = () => {
 	const navigate = useNavigate();
 	const auth = new Auth();
-	const navRef = useRef();
+    const [menuOpen, setMenuOpen] = useState(false);
 	const [refresh, setRefresh] = useState(false); // Estado de actualización
 
 	const logOut = () => {
@@ -17,30 +16,37 @@ function Navbar() {
 		navigate("/");
 	}
 
-	const showNavbar = () => {
-		navRef.current.classList.toggle("responsive_nav");
-	};
-
 	return (
-		<header>
-		<nav ref={navRef}>
-			{auth.getAccessToken() !== null ? (
-				<Button onClick={logOut} style={{backgroundColor:"black"}}>Cerrar sesión</Button>
-			) : (
-			<>
-				<Link to="/login">Ingresar</Link>
-				<Link to="/signup">Registrarse</Link>
-			</>
-			)}
-			<button className="nav-btn nav-close-btn" onClick={showNavbar}>
-			<FaTimes />
-			</button>
+		<nav>
+			<Link to="/" className="title">
+				{/* <img src={logo} alt='' className='logo'></img> */}
+				<p>LOGO</p>
+			</Link>
+			<div className="menu" onClick={() => setMenuOpen(!menuOpen)}>
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
+			<ul className={menuOpen ? "open" : ""}>
+				{auth.getAccessToken() !== null ? (
+					<li>
+						<Button onClick={logOut} style={{backgroundColor:"black"}}>Cerrar sesión</Button>
+					</li>
+				) : (
+				<>
+					<li>
+						<Link to="/login">Ingresar</Link>
+					</li>
+					<li>
+						<Link to="/signup">Registrarse</Link>
+					</li>
+				</>
+				)}
+				
+			</ul>
 		</nav>
-		<button className="nav-btn" onClick={showNavbar}>
-			<FaBars />
-		</button>
-		</header>
-	);
+	)
 }
 
-export default Navbar;
+export default NavBar
+

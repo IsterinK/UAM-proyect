@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Auth } from "../../../api/index";
 import { Department } from '../../../api/department';
 import { InputLabel, FormControl, Autocomplete, Box, Button, Checkbox, FormControlLabel, IconButton, InputAdornment, Modal, OutlinedInput, TextField, CardContent, Grid, Fab, Avatar } from '@mui/material';
@@ -15,6 +15,18 @@ const SignUp = () => {
     /* new Instance of Auth */
     const auth = new Auth();
     const dep = new Department();
+
+    const inputRef = useRef(null);
+    const [selectedImage, setSelectedImage] = useState(null);
+
+    const handleUploadClick = (event) => {
+        var file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onloadend = function(e) {
+            setSelectedImage(reader.result);
+        };
+        reader.readAsDataURL(file);
+    };
 
     // User
     const [firstname, setFirstname] = useState("");
@@ -232,18 +244,6 @@ const SignUp = () => {
         event.preventDefault();
     };
 
-    const handleUploadClick = (event) => {
-        console.log();
-        var file = event.target.files[0];
-        const reader = new FileReader();
-        var url = reader.readAsDataURL(file);
-    
-        reader.onloadend = function(e) {
-            setAvatar([reader.result])
-        }.bind(this);
-        console.log(url); // Would see a path?
-    };
-
     // Componente personalizado para el Snackbar
     function Alert(props) {
         return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -254,18 +254,40 @@ const SignUp = () => {
             <h1 style={{color:"black"}}>Registrarse</h1>
             <div className='auth-container'>
                 <form className='auth-form'>
-                    <Avatar>
-                        <Grid container justify="center" alignItems="center">
-                            <input
-                            accept="image/*"
-                            id="contained-button-file"
-                            multiple
-                            type="file"
-                            onChange={handleUploadClick}
-                            />
-                        </Grid>
-                    </Avatar>
+                <div className='auth-form_row'>
+                    <input
+                        accept="image/*"
+                        id="contained-button-file"
+                        type="file"
+                        onChange={handleUploadClick}
+                        style={{ display: 'none' }}
+                        ref={inputRef}
+                    />
+                    <div className="avatar-button-container">
+                        <label htmlFor="contained-button-file">
+                            <Button
+                                variant="outlined"
+                                component="span"
+                            >
+                                Selecciona un avatar
+                            </Button>
+                        </label>
 
+                        {selectedImage && (
+                            <Avatar
+                                alt="Imagen de perfil"
+                                src={selectedImage}
+                                sx={{
+                                    width: 60,
+                                    height: 60,
+                                    marginLeft:5,
+                                    border: '3px solid #CCC'
+                                }}
+                            />
+                        )}
+                    </div>
+                </div>
+                
                     <div className='auth-form_row'>
                         <TextField
                             id="firstname"
@@ -381,7 +403,8 @@ const SignUp = () => {
 
                     <Button onClick={handleSetOpenTerms} 
                         sx={{
-                            marginY:1
+                            margin:0,
+                            padding:0
                         }}
                     >
                         Acepto Terminos y condiciones
@@ -395,7 +418,7 @@ const SignUp = () => {
                                 aria-labelledby="parent-modal-title"
                                 aria-describedby="parent-modal-description"
                             >
-                            <Box sx={{ ... style, width: 900 }}>
+                            <Box sx={{ ... style, width: 900, borderRadius:2 }}>
                                 <h2 id="parent-modal-title">Terminos y Condiciones</h2>
                                 <p id="parent-modal-description">
                                 Por favor, lee detenidamente los siguientes términos y condiciones antes de utilizar nuestro sitio web. Al acceder y utilizar este sitio web, aceptas cumplir con estos términos y condiciones. Si no estás de acuerdo con alguno de los siguientes puntos, te recomendamos que no utilices nuestro sitio web. <br/>
@@ -454,10 +477,10 @@ const SignUp = () => {
 
                 <Button 
                     variant="contained" 
-                    color="success"
+                    color="secondary"
                     onClick={handleSave}
                     sx={{
-                        marginBottom:5
+                        margin:0,
                     }}
                 >
                     Registrarse
