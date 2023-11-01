@@ -49,11 +49,11 @@ const Users = () => {
 
   return (
     <div className="main-cont">
-      <div className="App-header">
+      <div className="nav-container">
         <Navbar></Navbar>
       </div>
       <p className="title">Usuarios</p>
-      <Button className="add-user-btn" variant="contained" color="success" onClick={handleOpenModal}>
+      <Button className="add-user-btn" variant="contained" color="secondary" onClick={handleOpenModal}>
         Nuevo usuario
       </Button>
       <div className="users-page">

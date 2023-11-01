@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Auth } from "../../../api/index";
 import { Department } from '../../../api/department';
-import { InputLabel, FormControl, Autocomplete, Button, IconButton, InputAdornment,  OutlinedInput, TextField, Grid, Avatar } from '@mui/material';
+import { InputLabel, FormControl, Autocomplete, Box, Button, Checkbox, FormControlLabel, IconButton, InputAdornment, Modal, OutlinedInput, TextField, CardContent, Grid, Fab, Avatar } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
@@ -10,16 +10,24 @@ import { useNavigate } from "react-router-dom";
 
 const CreateUser = ({ handleCloseModal }) => {
     const navigate = useNavigate();
+    /* Regex for e-mail */
     const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|yahoo\.com|hotmail\.com|outlook.com|icloud.com|aol.com|protonmail.com|zoho.com)$/;
+    /* new Instance of Auth */
     const auth = new Auth();
     const dep = new Department();
+
+    const [selectedImage, setSelectedImage] = useState(null);
+
+    const handleUploadClick = (event) => {
+        var file = event.target.files[0];
+        setSelectedImage(file)
+    };
 
     // User
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
-    const [currentPassword, setCurrentpassword] = useState("");
-    const [avatar, setAvatar] = useState(null)
+    const [currentPassword, setCurrentpassword] = useState("")
 
     // Address
     const [selectedDepartment, setSelectedDepartment] = useState(null);
@@ -29,10 +37,19 @@ const CreateUser = ({ handleCloseModal }) => {
     // Data for form
     const [showPassword, setShowPassword] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState("");
+    
+    const [departments, setDepartments] = useState([])
+    const [municipalities, setMunicipalities] = useState([])
 
-    // SnackBars
+    // Errors and selects
+    const [terms, setTerms] = useState(false);
+    const [checkBox, setCheckBox] = useState(false);
+    const [departmentsLoaded, setDepartmentsLoaded] = useState(false);
+
+    //SnackBars
     const [openSnackbarName, setOpenSnackbarName] = useState(false);
     const [openSnackbarNomenclature, setOpenSnackbarNomenclature] = useState(false);
+    const [openSnackbarAvatar, setOpenSnackbarAvatar] = useState(false);
     const [openSnackbarLastname, setOpenSnackbarLastname] = useState(false);
     const [openSnackbarPassword, setOpenSnackbarPassword] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -41,26 +58,30 @@ const CreateUser = ({ handleCloseModal }) => {
     const [snackbarMessageEmail, setSnackbarMessageEmail] = useState("");
     const [openSnackbarDept, setOpenSnackbarDept] = useState(false);
     const [openSnackbarMun, setOpenSnackbarMun] = useState(false);
-    
-    const [departments, setDepartments] = useState([])
-    const [municipalities, setMunicipalities] = useState([])
-    const [departmentsLoaded, setDepartmentsLoaded] = useState(false);
 
-    const handleDepartments = async () => {
-        try {
-            const response = await dep.getDepartments();
-            setDepartments(response)
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
+    // Se ejecuta una vez cuando se carga el componente
     useEffect(() => {
         if (!departmentsLoaded) {
             handleDepartments();
             setDepartmentsLoaded(true);
         }
     }, [departmentsLoaded]);
+
+    const handleDepartments = async () => {
+        try {
+            const response = await dep.getDepartments();
+            const data = JSON.parse(response);
+            let departamentos = []
+
+            data.forEach(function (item) {
+                departamentos.push(item.department);
+            });
+            
+            setDepartments(departamentos)
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     /* UserData */
     const handleSetFirstname = (event) => {
@@ -73,6 +94,7 @@ const CreateUser = ({ handleCloseModal }) => {
 
     const handleSetEmail = (event) => {
         setEmail(event.target.value);
+        setOpenSnackbarEmail(false)
     }
 
     const handleSetPassword = (event) => {
@@ -81,6 +103,7 @@ const CreateUser = ({ handleCloseModal }) => {
     }
 
     const handleSave = async () => {
+        // Verifica si los campos de nombre, apellido, contraseña, departamento, municipio y nomenclatura no están vacíos
         if (firstname === "") {
             setOpenSnackbarName(true); // Muestra un Snackbar si el campo de nombre está vacío
             return;
@@ -111,25 +134,39 @@ const CreateUser = ({ handleCloseModal }) => {
             return;
         }
 
+        if (selectedImage === null){
+            setOpenSnackbarAvatar(true);
+            return;
+        }
+
         if (emailRegex.test(email)) {
+            // Validación de contraseñas
             if (currentPassword !== confirmPassword) {
                 setOpenSnackbar(true);
                 setSnackbarMessage("Las contraseñas no coinciden");
             } else {
                 setOpenSnackbar(false);
                 setSnackbarMessage("");
+
                 try {
                     const addr = await handleSaveAddress();
-                    const data = {
-                        name: firstname,
-                        lastname: lastname,
-                        email: email,
-                        password: currentPassword,
-                        address: addr
+                    
+                    const formData = new FormData();
+                    formData.append("name", firstname);
+                    formData.append("lastname", lastname);
+                    formData.append("email", email);
+                    formData.append("password", currentPassword);
+                    formData.append("address", addr);
+                    formData.append("avatar", selectedImage);
+                    
+                    console.log("FormData:");
+                    for (const pair of formData.entries()) {
+                    console.log(pair[0] + ": " + pair[1]);
                     }
 
                     try {
-                        const response = await auth.register(data);
+                        const response = await auth.register(formData);
+                        console.log(response);
                         if (response === 'Usuario creado con éxito') {
                             handleCloseModal();
                         }
@@ -145,6 +182,7 @@ const CreateUser = ({ handleCloseModal }) => {
             setSnackbarMessageEmail('Dirección de correo inválida');
         }
     }
+       
 
     /* Address Data */
     const handleSetNomenclature = (event) => {
@@ -154,17 +192,31 @@ const CreateUser = ({ handleCloseModal }) => {
     const handleDepartmentChange = async (event, value) => {
         if (value === null) {
             setMunicipalities([{ label: "Selecciona un departamento", value: null }]);
-            setSelectedDepartment(null); 
+            setSelectedDepartment(null);
         } else {
-            const municipalities = await dep.getMunByDepartment(value.value);
-            setSelectedDepartment(value.value); 
+            const response = await dep.getDepartments();
+            const data = JSON.parse(response);
+            var departamento = data.find(function(item) {
+                return item.department.value === value.value;
+            });
+            const municipalities = []
+            if(departamento){
+                departamento.municipios.map(function(municipio) {
+                    municipalities.push(municipio);
+                })
+            }else{
+                setMunicipalities([{ label: "El departamento no Existe", value: null }]);
+                setSelectedDepartment(null);
+            }
+            setSelectedDepartment(value.value);
             setMunicipalities(municipalities);
         }
     }
 
-    const handleMunChange = async (event, value) => {
+    const handleMunChange = (event, value) => {
         if (value === null) {
             setSelectedMun(null);
+            setMunicipalities([{ label: "Selecciona un municipio", value: null }]);
         } else {
             setSelectedMun(value.value);
         }
@@ -178,8 +230,10 @@ const CreateUser = ({ handleCloseModal }) => {
             nomclature: nomenclature
         }
 
+        // Luego procedemos con el registro
         try {
             const response = await dep.createAddress(data);
+            
             return response
         } catch (error) {
             console.error(error);
@@ -194,31 +248,49 @@ const CreateUser = ({ handleCloseModal }) => {
         event.preventDefault();
     };
 
-    const handleUploadClick = (event) => {
-        var file = event.target.files[0];
-        const reader = new FileReader();
-        reader.onloadend = function(e) {
-            setAvatar([reader.result])
-        }.bind(this);
-    };
+    // Componente personalizado para el Snackbar
+    function Alert(props) {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
 
     return (
-        <div className='main-container'>
-            <h1 style={{color: "black"}}>Registrarse</h1>
-            <div className='auth-container'>
-                <form className='auth-form'>
-                    <Avatar>
-                        <Grid container justify="center" alignItems="center">
-                            <input
-                                accept="image/*"
-                                id="contained-button-file"
-                                multiple
-                                type="file"
-                                onChange={handleUploadClick}
-                            />
-                        </Grid>
-                    </Avatar>
+        <div className='main-container-copy'>
+            <h1 style={{color:"black"}}>Crear Usuario</h1>
+            <div className='auth-container-copy'>
+                <form className='auth-form-copy'>
+                <div className='auth-form_row'>
+                    <input
+                        accept="image/*"
+                        id="contained-button-file"
+                        type="file"
+                        onChange={handleUploadClick}
+                        style={{ display: 'none' }}
+                    />
+                    <div className="avatar-button-container">
+                        <label htmlFor="contained-button-file">
+                            <Button
+                                variant="outlined"
+                                component="span"
+                            >
+                                Selecciona un avatar
+                            </Button>
+                        </label>
 
+                        {selectedImage && (
+                            <Avatar
+                                alt="Imagen de perfil"
+                                src={URL.createObjectURL(selectedImage)}
+                                sx={{
+                                    width: 60,
+                                    height: 60,
+                                    marginLeft:5,
+                                    border: '3px solid #CCC'
+                                }}
+                            />
+                        )}
+                    </div>
+                </div>
+                
                     <div className='auth-form_row'>
                         <TextField
                             id="firstname"
@@ -226,7 +298,7 @@ const CreateUser = ({ handleCloseModal }) => {
                             variant="outlined"
                             value={firstname}
                             className="input-auth-form"
-                            sx={{ width: "50%" }}
+                            sx={{ width: "50%"}}
                             onChange={handleSetFirstname}
                         />
                         <TextField
@@ -253,7 +325,7 @@ const CreateUser = ({ handleCloseModal }) => {
                     </div>
 
                     <div className='auth-form_row'>
-                    <FormControl sx={{ width: "50%" }}>
+                        <FormControl sx={{ width: "50%" }}>
                             <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
                             <OutlinedInput
                                 label="Contraseña"
@@ -331,18 +403,22 @@ const CreateUser = ({ handleCloseModal }) => {
                             onChange={handleSetNomenclature}
                         />
                     </div>
+                        
                 </form>
+
                 <Button 
                     variant="contained" 
-                    color="success"
+                    color="secondary"
                     onClick={handleSave}
                     sx={{
-                        marginTop:2
+                        margin:2,
                     }}
                 >
-                    Agregar
+                    Registrarse
                 </Button>
+                
             </div>
+
             {/* SnackBars */}
 
             <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={() => setOpenSnackbar(false)}>
@@ -392,8 +468,31 @@ const CreateUser = ({ handleCloseModal }) => {
                     El campo de nomenclatura no puede estar vacío.
                 </MuiAlert>
             </Snackbar>
+
+            <Snackbar open={openSnackbarAvatar} autoHideDuration={3000} onClose={() => setOpenSnackbarAvatar(false)}>
+                <MuiAlert severity="error">
+                    Debes seleccionar un avatar
+                </MuiAlert>
+            </Snackbar>
+
         </div>
     );
 }
+
+const style = {
+    position: 'absolute',
+    maxHeight: '80vh',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 600,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    overflowY: 'auto',
+    pt: 2,
+    px: 4,
+    pb: 3,
+};
 
 export default CreateUser;

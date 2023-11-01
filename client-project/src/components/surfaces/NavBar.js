@@ -19,8 +19,7 @@ const NavBar = () => {
 	return (
 		<nav>
 			<Link to="/" className="title">
-				{/* <img src={logo} alt='' className='logo'></img> */}
-				<p>LOGO</p>
+				<img src={"https://seeklogo.com/images/D/dragon-ball-goku-logo-7A0B308D2D-seeklogo.com.png"} alt='' className='logo'></img>
 			</Link>
 			<div className="menu" onClick={() => setMenuOpen(!menuOpen)}>
 				<span></span>
