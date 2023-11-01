@@ -77,7 +77,14 @@ const SignUp = () => {
     const handleDepartments = async () => {
         try {
             const response = await dep.getDepartments();
-            setDepartments(response)
+            const data = JSON.parse(response);
+            let departamentos = []
+
+            data.forEach(function (item) {
+                departamentos.push(item.department);
+            });
+            
+            setDepartments(departamentos)
         } catch (error) {
             console.error(error)
         }
@@ -190,7 +197,20 @@ const SignUp = () => {
             setMunicipalities([{ label: "Selecciona un departamento", value: null }]);
             setSelectedDepartment(null);
         } else {
-            const municipalities = await dep.getMunByDepartment(value.value);
+            const response = await dep.getDepartments();
+            const data = JSON.parse(response);
+            var departamento = data.find(function(item) {
+                return item.department.value === value.value;
+            });
+            const municipalities = []
+            if(departamento){
+                departamento.municipios.map(function(municipio) {
+                    municipalities.push(municipio);
+                })
+            }else{
+                setMunicipalities([{ label: "El departamento no Existe", value: null }]);
+                setSelectedDepartment(null);
+            }
             setSelectedDepartment(value.value);
             setMunicipalities(municipalities);
         }
