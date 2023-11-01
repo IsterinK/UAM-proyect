@@ -13,7 +13,6 @@ router.post("/newaddress", async (req, res)=>{
         nomclature: req.body.nomclature,
       })
       const saveAddress = await address.save()
-      console.log(address)
       res.status(201).json(saveAddress)
     }
     

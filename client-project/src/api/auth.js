@@ -2,24 +2,20 @@ import {ENV} from "../utils/constants"
 const { BASE_API_URL, API_ROUTER } = ENV;
 export class Auth{
     //Register
-    register = async (data) => {
-        const response = await fetch(`${BASE_API_URL}${API_ROUTER.REGISTER}`, {
+    register = async (formData) => {
+      const response = await fetch(`${BASE_API_URL}${API_ROUTER.REGISTER}`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          
-          body: JSON.stringify(data),
-        });
-        try {
+          body: formData
+      });
+      try {
           if (response.status !== 201) {
-            throw new Error("Error al crear usuario");
-          }else{
-            return "Usuario creado con éxito"
+              throw new Error("Error al crear usuario");
+          } else {
+              return "Usuario creado con éxito";
           }
-        } catch (error) {
+      } catch (error) {
           throw error;
-        }
+      }
     };
 
     //Login
